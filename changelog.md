@@ -1,4 +1,40 @@
 
+v2.2.0 (2014-11-14)
+-------------------
+
+- Background event rendering ([144], [1286])
+- Controlling where events can be dragged/resized and selections can go ([396], [1286], [2253])
+	- `eventOverlap`, `selectOverlap`, and similar
+	- `eventConstraint`, `selectConstraint`, and similar
+- Improvements to dragging and dropping external events ([2004])
+	- Associating with real event data. used with `eventReceive`
+	- Associating a `duration`
+- Performance boost for moment creation
+	- Be aware, FullCalendar-specific methods now attached directly to global moment.fn
+	- Helps with [issue 2259][2259]
+- Reintroduced forgotten `dropAccept` option ([2312])
+
+[144]: https://code.google.com/p/fullcalendar/issues/detail?id=144
+[396]: https://code.google.com/p/fullcalendar/issues/detail?id=396
+[1286]: https://code.google.com/p/fullcalendar/issues/detail?id=1286
+[2004]: https://code.google.com/p/fullcalendar/issues/detail?id=2004
+[2253]: https://code.google.com/p/fullcalendar/issues/detail?id=2253
+[2259]: https://code.google.com/p/fullcalendar/issues/detail?id=2259
+[2312]: https://code.google.com/p/fullcalendar/issues/detail?id=2312
+
+
+v2.1.1 (2014-08-29)
+-------------------
+
+- removeEventSource not working with array ([2203])
+- mouseout not triggered after mouseover+updateEvent ([829])
+- agenda event's render with no <a> href, not clickable ([2263])
+
+[2203]: https://code.google.com/p/fullcalendar/issues/detail?id=2203
+[829]: https://code.google.com/p/fullcalendar/issues/detail?id=829
+[2263]: https://code.google.com/p/fullcalendar/issues/detail?id=2263
+
+
 v2.1.0 (2014-08-25)
 -------------------
 
