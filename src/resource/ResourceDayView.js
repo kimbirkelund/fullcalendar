@@ -8,21 +8,18 @@ function ResourceDayView(calendar) {
     ResourceView.call(this, calendar); // call the super-constructor
 }
 
-
 ResourceDayView.prototype = createObject(ResourceView.prototype); // define the super-class
 $.extend(ResourceDayView.prototype, {
 
     name: "resourceDay",
 
-
-    incrementDate: function(date, delta) {
+    incrementDate: function (date, delta) {
         var out = date.clone().stripTime().add(delta, "days");
         out = this.skipHiddenDays(out, delta < 0 ? -1 : 1);
         return out;
     },
 
-
-    render: function(date) {
+    render: function (date) {
 
         this.cellToDate = function () {
             var d = this.dayOffsetToDate(0);

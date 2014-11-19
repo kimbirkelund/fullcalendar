@@ -39,6 +39,12 @@ function ResourceView(calendar) {
         return segs;
     };
 
+    this.timeGrid.baseRangeToSegs = this.timeGrid.rangeToSegs;
+    this.timeGrid.rangeToSegs = function (rangeStart, rangeEnd) {
+        var segs = this.baseRangeToSegs(rangeStart, rangeEnd);
+        return segs.filter(function (s) { return s.col === that.currentCol; });
+    };
+
     if (this.opt('allDaySlot')) { // should we display the "all-day" area?
         this.dayGrid = new DayGrid(this); // the all-day subcomponent of this view
 
@@ -51,10 +57,22 @@ function ResourceView(calendar) {
     else {
         this.coordMap = this.timeGrid.coordMap;
     }
+
+    if (this.dayGrid) {
+        this.dayGrid.rangeToSegs = function (start, end) {
+            var segs = this.view.rangeToSegments(start, end); // leverages the View's cell system
+            if (!segs || segs.length !== 1)
+                return [];
+
+            segs[0].rightCol = segs[0].leftCol = that.currentCol;
+            return segs;
+        }
+    }
 }
 
 
 ResourceView.prototype = createObject(View.prototype); // define the super-class
+ResourceView.prototype.baseDocumentDragStart = ResourceView.prototype.documentDragStart;
 $.extend(ResourceView.prototype, {
 
     t: null,
@@ -69,6 +87,29 @@ $.extend(ResourceView.prototype, {
     bottomRuleEl: null,
     bottomRuleHeight: null,
 
+    // the column currently dragging over, over -1 if no column if not dragging or not over a column
+    currentCol: -1,
+
+    documentDragStart: function (ev, ui) {
+        var that = this;
+
+        if (that.opt('droppable')) { // only listen if this setting is on
+
+            // listener that tracks mouse movement over date-associated pixel regions
+            var dragListener = new DragListener(that.coordMap, {
+                cellOver: function (cell, date) {
+                    that.currentCol = cell.col;
+                },
+                cellOut: function () {
+                    that.currentCol = -1;
+                }
+            });
+
+            dragListener.startListening(); // start listening immediately
+        }
+
+        that.baseDocumentDragStart(ev, ui);
+    },
 
     /* Rendering
     ------------------------------------------------------------------------------------------------------------------*/
@@ -127,11 +168,12 @@ $.extend(ResourceView.prototype, {
         var view = this;
         var calendar = view.calendar;
         var resource = calendar.options.resources[col];
+        var resourceId = resource.id;
 
         return '' +
-            '<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-resource' + col + '">' +
+            '<th class="fc-day-header ' + view.widgetHeaderClass + ' fc-resource' + col + '" data-resourceid="' + resourceId + '">' +
                 htmlEscape(resource.name) +
-            '</th>';
+                ' <i class="fa fa-info-circle"></i></th>';
     },
 
 

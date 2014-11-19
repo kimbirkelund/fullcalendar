@@ -95,12 +95,7 @@ module.exports = function(grunt) {
 	function wrapWithUMD(body) {
 		return [
 			'(function(factory) {',
-			'    if (typeof define === "function" && define.amd) {',
-			'        define([ "jquery", "moment" ], factory);',
-			'    }',
-			'    else {',
-			'        factory(jQuery, moment);',
-			'    }',
+			'    factory(jQuery, moment);',
 			'})(function($, moment) {',
 			'',
 			body,
