@@ -134,6 +134,24 @@ var langOptionHash = {
 	}
 };
 
+function langLookup(isoCode, skipFallbackToDefault) {
+    var langOption = null;
+    if (isoCode in langOptionHash)
+        langOption = langOptionHash[isoCode];
+    else {
+        var dashIndex = isoCode.indexOf("-");
+        if (dashIndex !== -1) {
+            isoCode = isoCode.substring(0, dashIndex);
+            if (isoCode in langOptionHash)
+                langOption = langOptionHash[isoCode];
+        }
+    }
+
+    if (!langOption && !skipFallbackToDefault)
+        langOption = langOptionHash[defaults.lang];
+
+    return langOption;
+}
 
 // right-to-left defaults
 var rtlDefaults = {

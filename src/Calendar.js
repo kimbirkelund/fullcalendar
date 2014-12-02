@@ -15,12 +15,7 @@ function Calendar(element, instanceOptions) {
 	var langOptions;
 
 	// determine language options
-	if (options.lang in langOptionHash) {
-		langOptions = langOptionHash[options.lang];
-	}
-	else {
-		langOptions = langOptionHash[defaults.lang];
-	}
+	langOptions = langLookup(options.lang);
 
 	if (langOptions) { // if language options exist, rebuild...
 		options = mergeOptions({}, defaults, langOptions, instanceOptions);
