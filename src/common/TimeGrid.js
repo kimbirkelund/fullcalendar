@@ -336,12 +336,12 @@ $.extend(TimeGrid.prototype, {
 	// Renders a mock "helper" event. `sourceSeg` is the original segment object and might be null (an external drag)
 	renderHelper: function(event, sourceSeg) {
 		var segs = this.eventsToSegs([ event ]);
-		var tableEl;
+		var tableEl = $('<table><tr/></table>');
 		var i, seg;
 		var sourceEl;
 
 		segs = this.renderFgSegEls(segs); // assigns each seg's el and returns a subset of segs that were rendered
-		tableEl = this.renderSegTable(segs);
+		this.renderSegTable(segs, tableEl);
 
 		// Try to make the segment that is in the same row as sourceSeg look the same
 		for (i = 0; i < segs.length; i++) {
