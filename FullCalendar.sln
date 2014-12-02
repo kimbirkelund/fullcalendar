@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "fullcalendar.2.1.0", "http://localhost:29464", "{B77943BC-9A60-4792-B89B-A26E6971DED8}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "fullcalendar", "http://localhost:29464", "{B77943BC-9A60-4792-B89B-A26E6971DED8}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "true"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_29464"
-		Debug.AspNetCompiler.PhysicalPath = "."
+		Debug.AspNetCompiler.PhysicalPath = ".\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_29464\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
