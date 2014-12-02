@@ -1,7 +1,7 @@
 /*!
- * FullCalendar v2.2.3
- * Docs & License: http://arshaw.com/fullcalendar/
- * (c) 2013 Adam Shaw
+ * <%= meta.title %> v<%= meta.version %>
+ * Docs & License: <%= meta.homepage %>
+ * (c) <%= meta.copyright %>
  */
 
 (function(factory) {
@@ -145,6 +145,24 @@ var langOptionHash = {
 	}
 };
 
+function langLookup(isoCode, skipFallbackToDefault) {
+    var langOption = null;
+    if (isoCode in langOptionHash)
+        langOption = langOptionHash[isoCode];
+    else {
+        var dashIndex = isoCode.indexOf("-");
+        if (dashIndex !== -1) {
+            isoCode = isoCode.substring(0, dashIndex);
+            if (isoCode in langOptionHash)
+                langOption = langOptionHash[isoCode];
+        }
+    }
+
+    if (!langOption && !skipFallbackToDefault)
+        langOption = langOptionHash[defaults.lang];
+
+    return langOption;
+}
 
 // right-to-left defaults
 var rtlDefaults = {
@@ -169,7 +187,7 @@ var rtlDefaults = {
 
 ;;
 
-var fc = $.fullCalendar = { version: "2.2.3" };
+var fc = $.fullCalendar = { version: "<%= meta.version %>" };
 var fcViews = fc.views = {};
 
 
@@ -257,7 +275,7 @@ fc.langs = langOptionHash; // expose
 // for our own purposes. Will set this as the default language for datepicker.
 // Called from a translation file.
 fc.datepickerLang = function(langCode, datepickerLangCode, options) {
-	var langOptions = langOptionHash[langCode];
+    var langOptions = langLookup(langCode, true);
 
 	// initialize FullCalendar's lang hash for this language
 	if (!langOptions) {
@@ -280,24 +298,6 @@ fc.datepickerLang = function(langCode, datepickerLangCode, options) {
 			today: stripHtmlEntities(options.currentText)
 		}
 	});
-
-	// is jQuery UI Datepicker is on the page?
-	if ($.datepicker) {
-
-		// Register the language data.
-		// FullCalendar and MomentJS use language codes like "pt-br" but Datepicker
-		// does it like "pt-BR" or if it doesn't have the language, maybe just "pt".
-		// Make an alias so the language can be referenced either way.
-		$.datepicker.regional[datepickerLangCode] =
-			$.datepicker.regional[langCode] = // alias
-				options;
-
-		// Alias 'en' to the default language data. Do this every time.
-		$.datepicker.regional.en = $.datepicker.regional[''];
-
-		// Set as Datepicker's global defaults.
-		$.datepicker.setDefaults(options);
-	}
 };
 
 
@@ -307,7 +307,7 @@ fc.lang = function(langCode, options) {
 	var langOptions;
 
 	if (options) {
-		langOptions = langOptionHash[langCode];
+	    langOptions = langLookup(langCode, true);
 
 		// initialize the hash for this language
 		if (!langOptions) {
@@ -338,12 +338,7 @@ function Calendar(element, instanceOptions) {
 	var langOptions;
 
 	// determine language options
-	if (options.lang in langOptionHash) {
-		langOptions = langOptionHash[options.lang];
-	}
-	else {
-		langOptions = langOptionHash[defaults.lang];
-	}
+	langOptions = langLookup(options.lang);
 
 	if (langOptions) { // if language options exist, rebuild...
 		options = mergeOptions({}, defaults, langOptions, instanceOptions);
